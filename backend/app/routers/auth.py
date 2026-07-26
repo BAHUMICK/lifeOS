@@ -6,7 +6,7 @@ from app.schemas.user import UserLogin
 from app.models.user import User
 from app.database.dependencies import get_db
 
-from app.core.security import hash_password, verify_password
+from app.core.security import hash_password, verify_password, create_access_token
 
 router = APIRouter()
 
@@ -46,11 +46,17 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
                     status_code= 400,
                     detail = "invalid email or password"
         )
+    print("Stored password:", existing_user.password)
     if not verify_password(user.password, existing_user.password):
         raise HTTPException(
             status_code=400,
             detail=" invalid email or password"
         )
+    access_token = create_access_token(
+        data={"sub":existing_user.email}
+        )
     return {
-        "message":"login successfull"
-    }
+    "access_token": access_token,
+    "token_type": "bearer"
+}   
+
