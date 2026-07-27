@@ -5,8 +5,14 @@ from app.schemas.user import UserRegister
 from app.schemas.user import UserLogin
 from app.models.user import User
 from app.database.dependencies import get_db
+from app.core.security import (
+    hash_password,
+    verify_password,
+    create_access_token,
+    get_current_user
+)
 
-from app.core.security import hash_password, verify_password, create_access_token
+from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter()
 
@@ -39,15 +45,17 @@ def register(user: UserRegister, db: Session = Depends(get_db)):
     }
 
 @router.post("/login")
-def login(user: UserLogin, db: Session = Depends(get_db)):
-    existing_user = db.query(User).filter(User.email == user.email).first()
+def login(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    db: Session = Depends(get_db)
+):
+    existing_user = db.query(User).filter(User.email == form_data.username).first()
     if  not existing_user:
         raise HTTPException(
                     status_code= 400,
                     detail = "invalid email or password"
         )
-    print("Stored password:", existing_user.password)
-    if not verify_password(user.password, existing_user.password):
+    if not verify_password(form_data.password, existing_user.password):
         raise HTTPException(
             status_code=400,
             detail=" invalid email or password"
@@ -59,4 +67,10 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
     "access_token": access_token,
     "token_type": "bearer"
 }   
-
+@router.get("/profile")
+def profile(current_user : User = Depends(get_current_user)):
+    return {
+        "id" : current_user.id,
+        "username" : current_user.username,
+        "email" : current_user.email
+    }
