@@ -1,3 +1,6 @@
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
 import {
   FaHome,
   FaTasks,
@@ -9,6 +12,9 @@ import {
 } from "react-icons/fa";
 
 function Sidebar() {
+
+  const navigate = useNavigate();
+  const location = useLocation();
   return (
     <div
       style={{
@@ -22,20 +28,20 @@ function Sidebar() {
     >
       <h2 style={{ marginBottom: "30px" }}>🚀 LifeOS</h2>
 
-      <MenuItem icon={<FaHome />} text="Dashboard" />
-      <MenuItem icon={<FaTasks />} text="Tasks" />
-      <MenuItem icon={<FaStickyNote />} text="Notes" />
-      <MenuItem icon={<FaCalendarAlt />} text="Calendar" />
-      <MenuItem icon={<FaWallet />} text="Expenses" />
-      <MenuItem icon={<FaUser />} text="Profile" />
-      <MenuItem icon={<FaCog />} text="Settings" />
+      <MenuItem icon={<FaHome />} text="Dashboard" route="/dashboard" navigate={navigate} />
+      <MenuItem icon={<FaTasks />} text="Tasks" route="/tasks"  navigate={navigate}/>
+      <MenuItem icon={<FaStickyNote />} text="Notes" route="/notes" navigate={navigate} />
+      <MenuItem icon={<FaCalendarAlt />} text="Calendar" route="/calendar" navigate={navigate}/>
+      <MenuItem icon={<FaWallet />} text="Expenses" route = "/expenses" navigate={navigate}/>
+      <MenuItem icon={<FaUser />} text="Profile" route = "/profile" navigate={navigate}/>
+      <MenuItem icon={<FaCog />} text="Settings" route = "/settings" />
     </div>
   );
 }
 
-function MenuItem({ icon, text }) {
+function MenuItem({ icon, text, route, navigate }) {
   return (
-    <div
+    <div onClick={() => navigate(route)}
       style={{
         display: "flex",
         gap: "12px",
