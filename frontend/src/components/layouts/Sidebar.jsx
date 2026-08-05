@@ -1,3 +1,13 @@
+import {
+  FaHome,
+  FaTasks,
+  FaStickyNote,
+  FaCalendarAlt,
+  FaWallet,
+  FaUser,
+  FaCog,
+} from "react-icons/fa";
+
 function Sidebar() {
   return (
     <div
@@ -5,20 +15,39 @@ function Sidebar() {
         width: "250px",
         background: "#111827",
         color: "white",
+        height: "100vh",
         padding: "20px",
+        boxSizing: "border-box",
       }}
     >
-      <h2>LifeOS</h2>
+      <h2 style={{ marginBottom: "30px" }}>🚀 LifeOS</h2>
 
-      <hr />
+      <MenuItem icon={<FaHome />} text="Dashboard" />
+      <MenuItem icon={<FaTasks />} text="Tasks" />
+      <MenuItem icon={<FaStickyNote />} text="Notes" />
+      <MenuItem icon={<FaCalendarAlt />} text="Calendar" />
+      <MenuItem icon={<FaWallet />} text="Expenses" />
+      <MenuItem icon={<FaUser />} text="Profile" />
+      <MenuItem icon={<FaCog />} text="Settings" />
+    </div>
+  );
+}
 
-      <p>Dashboard</p>
-      <p>Tasks</p>
-      <p>Notes</p>
-      <p>Calendar</p>
-      <p>Expenses</p>
-      <p>Profile</p>
-      <p>Settings</p>
+function MenuItem({ icon, text }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        gap: "12px",
+        alignItems: "center",
+        padding: "12px",
+        marginBottom: "8px",
+        borderRadius: "10px",
+        cursor: "pointer",
+      }}
+    >
+      {icon}
+      {text}
     </div>
   );
 }
