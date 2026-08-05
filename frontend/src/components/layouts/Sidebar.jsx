@@ -39,7 +39,9 @@ function Sidebar() {
   );
 }
 
-function MenuItem({ icon, text, route, navigate }) {
+function MenuItem({ icon, text, route, navigate, location }) {
+
+  const isActive = true
   return (
     <div onClick={() => navigate(route)}
       style={{
@@ -50,6 +52,7 @@ function MenuItem({ icon, text, route, navigate }) {
         marginBottom: "8px",
         borderRadius: "10px",
         cursor: "pointer",
+        background: "#2563EB"
       }}
     >
       {icon}
